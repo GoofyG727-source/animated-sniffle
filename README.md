@@ -5,8 +5,8 @@ A sealed schema for flowers.
 - `flower.schema.json` — JSON Schema (draft 2020-12) describing one flower to
   the individual petal. Frozen; see `COVENANT.md`.
 - `SEAL.sha256` — the seal. `sha256sum -c SEAL.sha256` verifies it.
-- `specimen/viola-tricolor.json` — the one proof specimen, a wild pansy.
-- `COVENANT.md` — the terms: made once, never changed, derived from only.
+- `specimen/viola-tricolor.json` — the proof specimen, a wild pansy.
+- `COVENANT.md` — the one rule: don't make the same thing twice.
 
 ## Shape
 
