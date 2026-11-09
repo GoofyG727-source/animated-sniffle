@@ -22,3 +22,15 @@ petals are whole flowers listed under `inflorescence.florets`.
 
 Lengths are millimetres, angles are degrees, fractions run 0 (base) to 1
 (apex). Azimuth 0 is adaxial, increasing clockwise seen from the front.
+
+## Derived works
+
+`derived/` holds works made from the schema. They cite it by hash and never
+change it.
+
+- `render.py record.json out.svg` — draws a flower record from the front.
+- `generate.py SEED [SEED ...] --out DIR` — invents a flower per seed and draws
+  it. The same seed always gives the same flower. `--check` validates each
+  invented record against the sealed schema (needs `jsonschema`); `--records`
+  also writes the record as JSON.
+- `garden/` — seeds 1 to 12.
