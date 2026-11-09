@@ -34,3 +34,6 @@ change it.
   invented record against the sealed schema (needs `jsonschema`); `--records`
   also writes the record as JSON.
 - `garden/` — seeds 1 to 12.
+- `ledger.tsv` — every flower grown, by seed, name and drawing hash. The
+  generator refuses a seed or a drawing that is already listed, so nothing is
+  made twice. Commit the ledger after growing new flowers.
