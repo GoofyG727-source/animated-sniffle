@@ -9,7 +9,7 @@ Usage: render.py record.json out.svg
 """
 import json, math, sys
 
-PX = 22          # pixels per millimetre
+PX = 22          # pixels per millimetre; reset per record so the flower fills the frame
 SIZE = 640
 
 def merge(base, over):
@@ -45,7 +45,8 @@ def organs(whorl):
         m = listed.get(i, {})
         if m.get("absent"):
             continue
-        az = m.get("azimuth", (whorl.get("offset", 0) + (i - 1) * 360 / count) % 360)
+        step = whorl["divergence"] if whorl.get("phyllotaxis") == "spiral" and "divergence" in whorl else 360 / count
+        az = m.get("azimuth", (whorl.get("offset", 0) + (i - 1) * step) % 360)
         yield az, m.get("role", ""), merge(proto, m.get("overrides", {}))
 
 def draw_blade(az, organ, uid, defs, out, fallback="#888888"):
@@ -67,7 +68,15 @@ def draw_blade(az, organ, uid, defs, out, fallback="#888888"):
             g.append(f'<path d="M0,0 Q{L * PX * .5:.1f},{math.sin(ang) * L * PX * .3:.1f} {L * PX:.1f},{math.sin(ang) * W * PX * 1.1:.1f}" fill="none" stroke="#000" stroke-opacity="{0.25 * ven.get("prominence", 0.3):.2f}" stroke-width="1"/>')
     for mk in blade.get("markings", []):
         col = mk.get("color", {"srgb": "#000000"})["srgb"]
-        if mk["type"] == "eye":
+        if mk["type"] == "picotee":
+            g.append(f'<path d="{path}" fill="none" stroke="{col}" stroke-opacity=".85" stroke-width="{2 * mk.get("coverage", 0.1) * W * PX:.1f}"/>')
+        elif mk["type"] in ("spot", "speckle"):
+            n, f0, f1 = round(val(mk.get("count"), 12)), mk.get("from", 0.1), mk.get("to", 0.6)
+            for k in range(n):
+                t = f0 + (f1 - f0) * ((k * 0.618) % 1)
+                y = ((k * 0.381) % 1 - 0.5) * W * 0.9 * math.sin(math.pi * t)
+                g.append(f'<circle cx="{t * L * PX:.1f}" cy="{y * PX:.1f}" r="{0.035 * L * PX:.1f}" fill="{col}"/>')
+        elif mk["type"] == "eye":
             r = 0.3 * L * PX
             defs.append(f'<radialGradient id="e{uid}"><stop offset="0" stop-color="{col}"/><stop offset="1" stop-color="{col}" stop-opacity="0"/></radialGradient>')
             g.append(f'<ellipse cx="{0.12 * L * PX:.1f}" cy="0" rx="{r:.1f}" ry="{r * .9:.1f}" fill="url(#e{uid})" opacity="{mk.get("coverage", 1)}"/>')
@@ -85,6 +94,9 @@ def draw_blade(az, organ, uid, defs, out, fallback="#888888"):
     out.append("".join(g) + "</g></g>")
 
 def render(rec):
+    global PX
+    reach = max([val(o.get("length"), 6) for w in rec["whorls"] if w["kind"] in ("calyx", "epicalyx", "corolla", "perianth") for _, _, o in organs(w)] or [10])
+    PX = 0.4 * SIZE / reach
     defs, body, uid = [], [], 0
     front = {"dorsal": 0, "upper-lip": 0, "standard": 0, "lateral": 1, "wing": 1, "ventral": 2, "lower-lip": 2, "keel": 2, "labellum": 2}
     centre = []
@@ -99,15 +111,21 @@ def render(rec):
                 draw_blade(az, organ, uid, defs, body, "#5E8C3A")
         elif kind == "androecium":
             for az, _, organ in items:
-                an = organ.get("stamen", {}).get("anther", {})
+                st = organ.get("stamen", {})
+                an, fl = st.get("anther", {}), st.get("filament", {})
                 r, col = val(an.get("length"), 1.5) * PX, an.get("color", {"srgb": "#E9D48A"})["srgb"]
-                centre.append(f'<ellipse transform="rotate({az - 90:.1f})" cx="{r * .45:.1f}" cy="0" rx="{r * .5:.1f}" ry="{r * .28:.1f}" fill="{col}" stroke="#00000040"/>')
+                reach = val(fl.get("length"), 0.5) * PX
+                if reach > r:
+                    centre.insert(0, f'<line transform="rotate({az - 90:.1f})" x1="0" y1="0" x2="{reach:.1f}" y2="0" stroke="{fl.get("color", {"srgb": "#E8E4C8"})["srgb"]}" stroke-width="1.5"/>')
+                centre.append(f'<ellipse transform="rotate({az - 90:.1f})" cx="{reach + r * .3:.1f}" cy="0" rx="{r * .5:.1f}" ry="{r * .28:.1f}" fill="{col}" stroke="#00000040"/>')
         elif kind == "gynoecium":
             st = whorl.get("prototype", {}).get("carpel", {}).get("stigma", {})
             centre.append(f'<circle r="{0.45 * PX:.1f}" fill="{st.get("color", {"srgb": "#C9D98A"})["srgb"]}" stroke="#00000050"/>')
     label = rec["identity"]["label"]
     tx = rec["identity"].get("taxon", {})
     sci = " ".join(filter(None, [tx.get("genus"), tx.get("species")]))
+    if sci == label:
+        sci = rec["identity"].get("source", "")
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {SIZE} {SIZE}" width="{SIZE}" height="{SIZE}">'
             f'<!-- derivedFrom: urn:flower-schema:1 sha256:8440941d9f0e5761111f169400b5828a132b2a4852a62bacdb0cd860a8bc31ca -->'
             f'<defs>{"".join(defs)}</defs><rect width="100%" height="100%" fill="#F6F2E8"/>'
