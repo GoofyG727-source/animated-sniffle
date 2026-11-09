@@ -23,7 +23,7 @@ formed; this checks that the flower it describes can sit in space.
 
 A flower is "realised" when an arrangement with no intersections is found. If
 none is found, that is a failure of this realiser's search, not a proof that
-no arrangement exists. The test is made on meshes, at three resolutions; an
+no arrangement exists. The test is made on meshes, at four resolutions; an
 intersection smaller than the finest mesh can escape it. Surfaces have no
 thickness; stamens and carpels are placed but not tested.
 
@@ -39,7 +39,7 @@ SEAL = "urn:flower-schema:1 sha256:8440941d9f0e5761111f169400b5828a132b2a4852a62
 BLADE_KINDS = ("epicalyx", "calyx", "corolla", "perianth", "corona", "paracorolla")
 NT, NS = 18, 6                    # mesh resolution along and across an organ
 PROBE = (23, 5)                   # a second, different resolution for the probing edges (see clashes)
-CONFIRM = ((41, 11), (53, 13))    # finer probes an arrangement must also pass before it is accepted
+CONFIRM = ((41, 11), (53, 13), (79, 17))    # finer probes an arrangement must also pass before it is accepted
 LAYER_OF = {"dorsal": 0, "upper-lip": 0, "standard": 0, "outer": 0, "lateral": 1, "wing": 1,
             "ventral": 2, "lower-lip": 2, "keel": 2, "labellum": 2, "inner": 2}
 BEND = {"flat": 0, "incurved": 30, "inflexed": 60, "cucullate": 70, "recurved": -30, "reflexed": -70, "revolute": -110, "geniculate": -45, "sigmoid": 0}
