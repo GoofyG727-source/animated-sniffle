@@ -1,0 +1,2818 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:flower-schema:1",
+  "title": "Flower",
+  "description": "One flower, described to the individual petal. Issue 1 — the only issue. Sealed by SHA-256; see SEAL.sha256 and COVENANT.md. Lengths are millimetres, angles are degrees, fractions run 0..1 from base to apex. Any vocabulary accepts an 'x:' term and any object accepts 'ext' and 'notes', so no future flower requires this file to change.",
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "urn:flower-schema:1"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable identifier of this record."
+    },
+    "identity": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "description": "What this flower is called here."
+        },
+        "reality": {
+          "description": "Whether this flower exists.",
+          "anyOf": [
+            {
+              "enum": [
+                "observed",
+                "described",
+                "cultivated",
+                "reconstructed",
+                "imagined"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "taxon": {
+          "type": "object",
+          "properties": {
+            "family": {
+              "type": "string"
+            },
+            "genus": {
+              "type": "string"
+            },
+            "species": {
+              "type": "string"
+            },
+            "infraspecific": {
+              "type": "string"
+            },
+            "cultivar": {
+              "type": "string"
+            },
+            "hybridFormula": {
+              "type": "string"
+            },
+            "authority": {
+              "type": "string"
+            },
+            "notes": {
+              "type": "string"
+            },
+            "ext": {
+              "$ref": "#/$defs/ext"
+            }
+          },
+          "additionalProperties": false
+        },
+        "commonNames": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "language": {
+                "type": "string",
+                "description": "BCP 47 tag."
+              },
+              "notes": {
+                "type": "string"
+              },
+              "ext": {
+                "$ref": "#/$defs/ext"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ]
+          }
+        },
+        "source": {
+          "type": "string",
+          "description": "Specimen, plate, publication, garden or imagination this record was taken from."
+        },
+        "recordedOn": {
+          "type": "string",
+          "format": "date"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "ext": {
+          "$ref": "#/$defs/ext"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "label"
+      ]
+    },
+    "unit": {
+      "description": "What this record is. A daisy 'flower' is a pseudanthium whose apparent petals are whole ray florets.",
+      "enum": [
+        "flower",
+        "pseudanthium"
+      ]
+    },
+    "inflorescence": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "description": "Architecture bearing this flower.",
+          "anyOf": [
+            {
+              "enum": [
+                "solitary",
+                "raceme",
+                "spike",
+                "spikelet",
+                "panicle",
+                "corymb",
+                "umbel",
+                "compound-umbel",
+                "cyme",
+                "dichasium",
+                "monochasium",
+                "scorpioid-cyme",
+                "thyrse",
+                "verticillaster",
+                "capitulum",
+                "spadix",
+                "catkin",
+                "cyathium",
+                "hypanthodium",
+                "fascicle"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "position": {
+          "description": "Where on the plant.",
+          "anyOf": [
+            {
+              "enum": [
+                "terminal",
+                "axillary",
+                "cauliflorous",
+                "basal",
+                "leaf-opposed"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "flowerCount": {
+          "$ref": "#/$defs/count"
+        },
+        "openingOrder": {
+          "description": "Sequence of anthesis.",
+          "anyOf": [
+            {
+              "enum": [
+                "acropetal",
+                "basipetal",
+                "centripetal",
+                "centrifugal",
+                "simultaneous"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "florets": {
+          "type": "array",
+          "description": "For a pseudanthium: the classes of true flowers composing it, outside inward.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "role": {
+                "description": "Floret class.",
+                "anyOf": [
+                  {
+                    "enum": [
+                      "ray",
+                      "disc",
+                      "ligulate",
+                      "bilabiate",
+                      "sterile-showy",
+                      "fertile",
+                      "staminate",
+                      "pistillate"
+                    ]
+                  },
+                  {
+                    "$ref": "#/$defs/extensionTerm"
+                  }
+                ]
+              },
+              "count": {
+                "$ref": "#/$defs/count"
+              },
+              "rings": {
+                "$ref": "#/$defs/count"
+              },
+              "divergence": {
+                "$ref": "#/$defs/angle"
+              },
+              "flower": {
+                "$ref": "#/$defs/flowerBody"
+              },
+              "notes": {
+                "type": "string"
+              },
+              "ext": {
+                "$ref": "#/$defs/ext"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "role",
+              "flower"
+            ]
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "ext": {
+          "$ref": "#/$defs/ext"
+        }
+      },
+      "additionalProperties": false
+    },
+    "sexuality": {
+      "description": "Functional sex of this flower.",
+      "anyOf": [
+        {
+          "enum": [
+            "bisexual",
+            "staminate",
+            "pistillate",
+            "sterile"
+          ]
+        },
+        {
+          "$ref": "#/$defs/extensionTerm"
+        }
+      ]
+    },
+    "symmetry": {
+      "description": "Symmetry of the open flower.",
+      "anyOf": [
+        {
+          "enum": [
+            "actinomorphic",
+            "zygomorphic",
+            "disymmetric",
+            "asymmetric",
+            "spiral"
+          ]
+        },
+        {
+          "$ref": "#/$defs/extensionTerm"
+        }
+      ]
+    },
+    "symmetryPlanes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "merosity": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Base number of parts per whorl (3-merous, 5-merous, …); 0 = indefinite."
+    },
+    "form": {
+      "description": "Overall shape.",
+      "anyOf": [
+        {
+          "enum": [
+            "rotate",
+            "stellate",
+            "cupped",
+            "bowl",
+            "campanulate",
+            "funnelform",
+            "salverform",
+            "tubular",
+            "urceolate",
+            "globose",
+            "bilabiate",
+            "personate",
+            "papilionaceous",
+            "cruciform",
+            "ligulate",
+            "galeate",
+            "calceolate",
+            "coronate",
+            "trumpet",
+            "pompon",
+            "rosette",
+            "naked"
+          ]
+        },
+        {
+          "$ref": "#/$defs/extensionTerm"
+        }
+      ]
+    },
+    "doubling": {
+      "description": "Horticultural petal multiplication.",
+      "anyOf": [
+        {
+          "enum": [
+            "single",
+            "semi-double",
+            "double",
+            "full",
+            "anemone",
+            "hose-in-hose"
+          ]
+        },
+        {
+          "$ref": "#/$defs/extensionTerm"
+        }
+      ]
+    },
+    "diameter": {
+      "$ref": "#/$defs/measure"
+    },
+    "depth": {
+      "$ref": "#/$defs/measure"
+    },
+    "orientation": {
+      "description": "Facing of the open flower.",
+      "anyOf": [
+        {
+          "enum": [
+            "erect",
+            "ascending",
+            "horizontal",
+            "nodding",
+            "pendent",
+            "resupinate"
+          ]
+        },
+        {
+          "$ref": "#/$defs/extensionTerm"
+        }
+      ]
+    },
+    "pedicel": {
+      "type": "object",
+      "properties": {
+        "length": {
+          "$ref": "#/$defs/measure"
+        },
+        "diameter": {
+          "$ref": "#/$defs/measure"
+        },
+        "color": {
+          "$ref": "#/$defs/color"
+        },
+        "surface": {
+          "$ref": "#/$defs/surface"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "ext": {
+          "$ref": "#/$defs/ext"
+        }
+      },
+      "additionalProperties": false
+    },
+    "bracts": {
+      "type": "array",
+      "description": "Bracts, bracteoles, involucre, spathe, glumes, lemma, palea.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "count": {
+            "$ref": "#/$defs/count"
+          },
+          "length": {
+            "$ref": "#/$defs/measure"
+          },
+          "width": {
+            "$ref": "#/$defs/measure"
+          },
+          "color": {
+            "$ref": "#/$defs/color"
+          },
+          "blade": {
+            "$ref": "#/$defs/blade"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "ext": {
+            "$ref": "#/$defs/ext"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "receptacle": {
+      "type": "object",
+      "properties": {
+        "form": {
+          "description": "Shape of the floral axis.",
+          "anyOf": [
+            {
+              "enum": [
+                "flat",
+                "convex",
+                "conical",
+                "elongate",
+                "concave",
+                "cup",
+                "urn",
+                "disc"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "diameter": {
+          "$ref": "#/$defs/measure"
+        },
+        "color": {
+          "$ref": "#/$defs/color"
+        },
+        "ovaryPosition": {
+          "description": "Ovary relative to the other parts.",
+          "anyOf": [
+            {
+              "enum": [
+                "superior",
+                "half-inferior",
+                "inferior"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "insertion": {
+          "description": "Perianth insertion.",
+          "anyOf": [
+            {
+              "enum": [
+                "hypogynous",
+                "perigynous",
+                "epigynous"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "hypanthium": {
+          "type": "object",
+          "properties": {
+            "length": {
+              "$ref": "#/$defs/measure"
+            },
+            "form": {
+              "type": "string"
+            },
+            "notes": {
+              "type": "string"
+            },
+            "ext": {
+              "$ref": "#/$defs/ext"
+            }
+          },
+          "additionalProperties": false
+        },
+        "stalks": {
+          "type": "object",
+          "properties": {
+            "androphore": {
+              "$ref": "#/$defs/measure"
+            },
+            "gynophore": {
+              "$ref": "#/$defs/measure"
+            },
+            "androgynophore": {
+              "$ref": "#/$defs/measure"
+            },
+            "notes": {
+              "type": "string"
+            },
+            "ext": {
+              "$ref": "#/$defs/ext"
+            }
+          },
+          "additionalProperties": false
+        },
+        "notes": {
+          "type": "string"
+        },
+        "ext": {
+          "$ref": "#/$defs/ext"
+        }
+      },
+      "additionalProperties": false
+    },
+    "whorls": {
+      "type": "array",
+      "description": "Floral series from the outside inward. May be empty for naked flowers.",
+      "items": {
+        "$ref": "#/$defs/whorl"
+      }
+    },
+    "floralFormula": {
+      "type": "string",
+      "description": "Conventional floral formula, e.g. '↯ K5 C5 A5 G(3)'."
+    },
+    "scent": {
+      "type": "object",
+      "properties": {
+        "present": {
+          "type": "boolean"
+        },
+        "intensity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "descriptors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "emission": {
+          "description": "When scent is released.",
+          "anyOf": [
+            {
+              "enum": [
+                "diurnal",
+                "nocturnal",
+                "crepuscular",
+                "continuous"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "notes": {
+          "type": "string"
+        },
+        "ext": {
+          "$ref": "#/$defs/ext"
+        }
+      },
+      "additionalProperties": false
+    },
+    "rewards": {
+      "type": "array",
+      "items": {
+        "description": "What a visitor gains.",
+        "anyOf": [
+          {
+            "enum": [
+              "nectar",
+              "pollen",
+              "oil",
+              "resin",
+              "fragrance",
+              "shelter",
+              "heat",
+              "brood-site",
+              "none-deceptive"
+            ]
+          },
+          {
+            "$ref": "#/$defs/extensionTerm"
+          }
+        ]
+      }
+    },
+    "pollination": {
+      "type": "array",
+      "items": {
+        "description": "Vector.",
+        "anyOf": [
+          {
+            "enum": [
+              "bee",
+              "bumblebee",
+              "butterfly",
+              "moth",
+              "hawkmoth",
+              "fly",
+              "beetle",
+              "wasp",
+              "ant",
+              "bird",
+              "bat",
+              "mammal",
+              "wind",
+              "water",
+              "self",
+              "cleistogamous"
+            ]
+          },
+          {
+            "$ref": "#/$defs/extensionTerm"
+          }
+        ]
+      }
+    },
+    "phenology": {
+      "type": "object",
+      "properties": {
+        "stage": {
+          "description": "Moment this record captures.",
+          "anyOf": [
+            {
+              "enum": [
+                "bud",
+                "opening",
+                "anthesis",
+                "full-bloom",
+                "fading",
+                "senescent",
+                "fruiting"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "openness": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "0 closed bud .. 1 fully expanded."
+        },
+        "longevityDays": {
+          "type": "number",
+          "minimum": 0
+        },
+        "bloomMonths": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+          },
+          "uniqueItems": true
+        },
+        "hemisphere": {
+          "enum": [
+            "northern",
+            "southern",
+            "equatorial"
+          ]
+        },
+        "dichogamy": {
+          "description": "Timing of the sexes.",
+          "anyOf": [
+            {
+              "enum": [
+                "protandrous",
+                "protogynous",
+                "homogamous"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "movement": {
+          "type": "array",
+          "items": {
+            "description": "Motion.",
+            "anyOf": [
+              {
+                "enum": [
+                  "nyctinastic",
+                  "heliotropic",
+                  "thermonastic",
+                  "thigmonastic",
+                  "explosive",
+                  "resupinating"
+                ]
+              },
+              {
+                "$ref": "#/$defs/extensionTerm"
+              }
+            ]
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "ext": {
+          "$ref": "#/$defs/ext"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema",
+    "id",
+    "identity",
+    "whorls"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "extensionTerm": {
+      "type": "string",
+      "pattern": "^x:.+",
+      "description": "Any term outside the core vocabulary, prefixed 'x:'."
+    },
+    "ext": {
+      "type": "object",
+      "description": "Free-form extension space. The schema never inspects it."
+    },
+    "measure": {
+      "description": "A length in millimetres: one value or a range.",
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0
+        },
+        {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number",
+              "minimum": 0
+            },
+            "max": {
+              "type": "number",
+              "minimum": 0
+            },
+            "typical": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "min",
+            "max"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "angle": {
+      "type": "number",
+      "minimum": -360,
+      "maximum": 360
+    },
+    "count": {
+      "description": "A number of parts: exact, a range, or botanically indefinite (∞).",
+      "anyOf": [
+        {
+          "type": "integer",
+          "minimum": 0
+        },
+        {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "max": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "min"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "const": "indefinite"
+        }
+      ]
+    },
+    "color": {
+      "description": "A colour. sRGB is mandatory so every colour is renderable; the rest refines it.",
+      "type": "object",
+      "properties": {
+        "srgb": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "oklch": {
+          "type": "array",
+          "description": "[L 0..1, C ≥0, h degrees].",
+          "prefixItems": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 360
+            }
+          ],
+          "items": false,
+          "minItems": 3
+        },
+        "name": {
+          "type": "string",
+          "description": "Colour word or chart reference (e.g. an RHS Colour Chart code)."
+        },
+        "alpha": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "ultraviolet": {
+          "description": "Behaviour under UV, as a pollinator sees it.",
+          "anyOf": [
+            {
+              "enum": [
+                "absorbing",
+                "reflecting",
+                "fluorescent"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "notes": {
+          "type": "string"
+        },
+        "ext": {
+          "$ref": "#/$defs/ext"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "srgb"
+      ]
+    },
+    "surface": {
+      "type": "object",
+      "properties": {
+        "color": {
+          "$ref": "#/$defs/color"
+        },
+        "gloss": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "0 matte .. 1 mirror."
+        },
+        "indumentum": {
+          "description": "Hair covering.",
+          "anyOf": [
+            {
+              "enum": [
+                "glabrous",
+                "glabrescent",
+                "puberulent",
+                "pubescent",
+                "villous",
+                "tomentose",
+                "hirsute",
+                "hispid",
+                "sericeous",
+                "glandular",
+                "ciliate",
+                "bearded",
+                "papillose",
+                "farinose",
+                "glaucous"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "epidermis": {
+          "description": "Cell shape driving sheen and saturation.",
+          "anyOf": [
+            {
+              "enum": [
+                "flat",
+                "conical",
+                "papillate",
+                "striate",
+                "iridescent"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "notes": {
+          "type": "string"
+        },
+        "ext": {
+          "$ref": "#/$defs/ext"
+        }
+      },
+      "additionalProperties": false
+    },
+    "marking": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "description": "Kind of mark.",
+          "anyOf": [
+            {
+              "enum": [
+                "spot",
+                "speckle",
+                "blotch",
+                "eye",
+                "stripe",
+                "streak",
+                "veining",
+                "band",
+                "picotee",
+                "flame",
+                "feathering",
+                "halo",
+                "nectar-guide",
+                "bullseye",
+                "tessellation",
+                "flush",
+                "sectoring"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "color": {
+          "$ref": "#/$defs/color"
+        },
+        "region": {
+          "description": "Where on the organ.",
+          "anyOf": [
+            {
+              "enum": [
+                "base",
+                "claw",
+                "throat",
+                "center",
+                "midrib",
+                "veins",
+                "limb",
+                "margin",
+                "apex",
+                "whole"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "from": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Start along the organ axis, 0 base .. 1 apex."
+        },
+        "to": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "End along the organ axis, 0 base .. 1 apex."
+        },
+        "coverage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Fraction of the region covered."
+        },
+        "count": {
+          "$ref": "#/$defs/count"
+        },
+        "visibleIn": {
+          "description": "Spectrum in which the mark shows.",
+          "anyOf": [
+            {
+              "enum": [
+                "human-visible",
+                "ultraviolet",
+                "both"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "notes": {
+          "type": "string"
+        },
+        "ext": {
+          "$ref": "#/$defs/ext"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ]
+    },
+    "blade": {
+      "description": "A flattened, petal-like organ: sepal, petal, tepal, bract, corona segment, petaloid staminode.",
+      "type": "object",
+      "properties": {
+        "outline": {
+          "description": "Planar outline of the flattened organ.",
+          "anyOf": [
+            {
+              "enum": [
+                "linear",
+                "lanceolate",
+                "oblanceolate",
+                "ovate",
+                "obovate",
+                "elliptic",
+                "oblong",
+                "orbicular",
+                "spatulate",
+                "cordate",
+                "obcordate",
+                "deltoid",
+                "rhombic",
+                "reniform",
+                "flabellate",
+                "ligulate",
+                "filiform",
+                "subulate",
+                "panduriform",
+                "unguiculate"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "widestAt": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Position of greatest width along the axis, 0 base .. 1 apex."
+        },
+        "apex": {
+          "description": "Tip.",
+          "anyOf": [
+            {
+              "enum": [
+                "acute",
+                "acuminate",
+                "attenuate",
+                "obtuse",
+                "rounded",
+                "truncate",
+                "emarginate",
+                "retuse",
+                "mucronate",
+                "cuspidate",
+                "apiculate",
+                "aristate",
+                "caudate",
+                "bifid",
+                "trifid",
+                "cucullate"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "base": {
+          "description": "Attachment end.",
+          "anyOf": [
+            {
+              "enum": [
+                "cuneate",
+                "attenuate",
+                "rounded",
+                "truncate",
+                "cordate",
+                "auriculate",
+                "sagittate",
+                "hastate",
+                "clawed",
+                "saccate",
+                "spurred",
+                "sessile"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "margin": {
+          "description": "Edge.",
+          "anyOf": [
+            {
+              "enum": [
+                "entire",
+                "undulate",
+                "crisped",
+                "ruffled",
+                "serrate",
+                "serrulate",
+                "dentate",
+                "crenate",
+                "erose",
+                "ciliate",
+                "fimbriate",
+                "laciniate",
+                "lobed",
+                "cleft",
+                "parted",
+                "revolute",
+                "involute"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "lobes": {
+          "type": "object",
+          "properties": {
+            "count": {
+              "$ref": "#/$defs/count"
+            },
+            "depth": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "Sinus depth as a fraction of the distance to the midrib/base."
+            },
+            "outline": {
+              "type": "string"
+            },
+            "notes": {
+              "type": "string"
+            },
+            "ext": {
+              "$ref": "#/$defs/ext"
+            }
+          },
+          "additionalProperties": false
+        },
+        "claw": {
+          "description": "Narrow stalk-like base of a clawed petal.",
+          "type": "object",
+          "properties": {
+            "length": {
+              "$ref": "#/$defs/measure"
+            },
+            "width": {
+              "$ref": "#/$defs/measure"
+            },
+            "color": {
+              "$ref": "#/$defs/color"
+            },
+            "notes": {
+              "type": "string"
+            },
+            "ext": {
+              "$ref": "#/$defs/ext"
+            }
+          },
+          "additionalProperties": false
+        },
+        "spur": {
+          "type": "object",
+          "properties": {
+            "length": {
+              "$ref": "#/$defs/measure"
+            },
+            "diameter": {
+              "$ref": "#/$defs/measure"
+            },
+            "curvature": {
+              "description": "Spur line.",
+              "anyOf": [
+                {
+                  "enum": [
+                    "straight",
+                    "curved",
+                    "hooked",
+                    "coiled"
+                  ]
+                },
+                {
+                  "$ref": "#/$defs/extensionTerm"
+                }
+              ]
+            },
+            "nectariferous": {
+              "type": "boolean"
+            },
+            "color": {
+              "$ref": "#/$defs/color"
+            },
+            "notes": {
+              "type": "string"
+            },
+            "ext": {
+              "$ref": "#/$defs/ext"
+            }
+          },
+          "additionalProperties": false
+        },
+        "thickness": {
+          "$ref": "#/$defs/measure"
+        },
+        "texture": {
+          "description": "Substance of the tissue.",
+          "anyOf": [
+            {
+              "enum": [
+                "membranous",
+                "papery",
+                "scarious",
+                "chartaceous",
+                "herbaceous",
+                "fleshy",
+                "succulent",
+                "waxy",
+                "leathery",
+                "velvety",
+                "satiny",
+                "silky",
+                "crystalline",
+                "crepe"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "translucency": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "0 opaque .. 1 clear."
+        },
+        "longitudinalCurve": {
+          "description": "Bend along the axis, base to apex.",
+          "anyOf": [
+            {
+              "enum": [
+                "flat",
+                "incurved",
+                "inflexed",
+                "recurved",
+                "reflexed",
+                "revolute",
+                "sigmoid",
+                "cucullate",
+                "geniculate"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "longitudinalCurveAngle": {
+          "$ref": "#/$defs/angle",
+          "description": "Total bend base to apex; positive = toward the floral axis."
+        },
+        "transverseCurve": {
+          "description": "Bend across the axis, margin to margin.",
+          "anyOf": [
+            {
+              "enum": [
+                "flat",
+                "concave",
+                "convex",
+                "channelled",
+                "keeled",
+                "conduplicate",
+                "involute",
+                "revolute",
+                "plicate",
+                "tubular",
+                "saccate"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "twist": {
+          "$ref": "#/$defs/angle",
+          "description": "Rotation about the organ's own axis, base to apex."
+        },
+        "elevation": {
+          "$ref": "#/$defs/angle",
+          "description": "Angle between the organ axis at its base and the floral axis: 0 = parallel to the axis (closed/erect), 90 = flat open, >90 = reflexed."
+        },
+        "venation": {
+          "type": "object",
+          "properties": {
+            "pattern": {
+              "description": "Vein architecture.",
+              "anyOf": [
+                {
+                  "enum": [
+                    "parallel",
+                    "pinnate",
+                    "palmate",
+                    "reticulate",
+                    "dichotomous",
+                    "flabellate",
+                    "obscure",
+                    "single-veined"
+                  ]
+                },
+                {
+                  "$ref": "#/$defs/extensionTerm"
+                }
+              ]
+            },
+            "primaryVeins": {
+              "$ref": "#/$defs/count"
+            },
+            "prominence": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "0 invisible .. 1 strongly raised or contrasted."
+            },
+            "color": {
+              "$ref": "#/$defs/color"
+            },
+            "notes": {
+              "type": "string"
+            },
+            "ext": {
+              "$ref": "#/$defs/ext"
+            }
+          },
+          "additionalProperties": false
+        },
+        "adaxial": {
+          "type": "object",
+          "properties": {
+            "color": {
+              "$ref": "#/$defs/color"
+            },
+            "gloss": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "0 matte .. 1 mirror."
+            },
+            "indumentum": {
+              "description": "Hair covering.",
+              "anyOf": [
+                {
+                  "enum": [
+                    "glabrous",
+                    "glabrescent",
+                    "puberulent",
+                    "pubescent",
+                    "villous",
+                    "tomentose",
+                    "hirsute",
+                    "hispid",
+                    "sericeous",
+                    "glandular",
+                    "ciliate",
+                    "bearded",
+                    "papillose",
+                    "farinose",
+                    "glaucous"
+                  ]
+                },
+                {
+                  "$ref": "#/$defs/extensionTerm"
+                }
+              ]
+            },
+            "epidermis": {
+              "description": "Cell shape driving sheen and saturation.",
+              "anyOf": [
+                {
+                  "enum": [
+                    "flat",
+                    "conical",
+                    "papillate",
+                    "striate",
+                    "iridescent"
+                  ]
+                },
+                {
+                  "$ref": "#/$defs/extensionTerm"
+                }
+              ]
+            },
+            "notes": {
+              "type": "string"
+            },
+            "ext": {
+              "$ref": "#/$defs/ext"
+            }
+          },
+          "additionalProperties": false,
+          "description": "Inner / upper face (toward the floral axis)."
+        },
+        "abaxial": {
+          "type": "object",
+          "properties": {
+            "color": {
+              "$ref": "#/$defs/color"
+            },
+            "gloss": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "0 matte .. 1 mirror."
+            },
+            "indumentum": {
+              "description": "Hair covering.",
+              "anyOf": [
+                {
+                  "enum": [
+                    "glabrous",
+                    "glabrescent",
+                    "puberulent",
+                    "pubescent",
+                    "villous",
+                    "tomentose",
+                    "hirsute",
+                    "hispid",
+                    "sericeous",
+                    "glandular",
+                    "ciliate",
+                    "bearded",
+                    "papillose",
+                    "farinose",
+                    "glaucous"
+                  ]
+                },
+                {
+                  "$ref": "#/$defs/extensionTerm"
+                }
+              ]
+            },
+            "epidermis": {
+              "description": "Cell shape driving sheen and saturation.",
+              "anyOf": [
+                {
+                  "enum": [
+                    "flat",
+                    "conical",
+                    "papillate",
+                    "striate",
+                    "iridescent"
+                  ]
+                },
+                {
+                  "$ref": "#/$defs/extensionTerm"
+                }
+              ]
+            },
+            "notes": {
+              "type": "string"
+            },
+            "ext": {
+              "$ref": "#/$defs/ext"
+            }
+          },
+          "additionalProperties": false,
+          "description": "Outer / lower face (away from the floral axis)."
+        },
+        "gradient": {
+          "description": "Ground colour along the axis; stops ordered base to apex.",
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "object",
+            "properties": {
+              "at": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "description": "0 base .. 1 apex."
+              },
+              "color": {
+                "$ref": "#/$defs/color"
+              },
+              "notes": {
+                "type": "string"
+              },
+              "ext": {
+                "$ref": "#/$defs/ext"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "at",
+              "color"
+            ]
+          }
+        },
+        "markings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/marking"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "ext": {
+          "$ref": "#/$defs/ext"
+        }
+      },
+      "additionalProperties": false
+    },
+    "stamen": {
+      "type": "object",
+      "properties": {
+        "fertile": {
+          "type": "boolean",
+          "description": "false = staminode."
+        },
+        "filament": {
+          "type": "object",
+          "properties": {
+            "length": {
+              "$ref": "#/$defs/measure"
+            },
+            "width": {
+              "$ref": "#/$defs/measure"
+            },
+            "color": {
+              "$ref": "#/$defs/color"
+            },
+            "form": {
+              "description": "Shape.",
+              "anyOf": [
+                {
+                  "enum": [
+                    "filiform",
+                    "flattened",
+                    "petaloid",
+                    "subulate",
+                    "geniculate",
+                    "bearded",
+                    "absent"
+                  ]
+                },
+                {
+                  "$ref": "#/$defs/extensionTerm"
+                }
+              ]
+            },
+            "notes": {
+              "type": "string"
+            },
+            "ext": {
+              "$ref": "#/$defs/ext"
+            }
+          },
+          "additionalProperties": false
+        },
+        "anther": {
+          "type": "object",
+          "properties": {
+            "length": {
+              "$ref": "#/$defs/measure"
+            },
+            "width": {
+              "$ref": "#/$defs/measure"
+            },
+            "color": {
+              "$ref": "#/$defs/color"
+            },
+            "attachment": {
+              "description": "How the anther joins the filament.",
+              "anyOf": [
+                {
+                  "enum": [
+                    "basifixed",
+                    "dorsifixed",
+                    "versatile",
+                    "adnate",
+                    "sessile"
+                  ]
+                },
+                {
+                  "$ref": "#/$defs/extensionTerm"
+                }
+              ]
+            },
+            "dehiscence": {
+              "description": "How it opens.",
+              "anyOf": [
+                {
+                  "enum": [
+                    "longitudinal",
+                    "poricidal",
+                    "valvular",
+                    "transverse",
+                    "indehiscent"
+                  ]
+                },
+                {
+                  "$ref": "#/$defs/extensionTerm"
+                }
+              ]
+            },
+            "facing": {
+              "description": "Direction of opening.",
+              "anyOf": [
+                {
+                  "enum": [
+                    "introrse",
+                    "extrorse",
+                    "latrorse"
+                  ]
+                },
+                {
+                  "$ref": "#/$defs/extensionTerm"
+                }
+              ]
+            },
+            "thecae": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "connective": {
+              "type": "string"
+            },
+            "notes": {
+              "type": "string"
+            },
+            "ext": {
+              "$ref": "#/$defs/ext"
+            }
+          },
+          "additionalProperties": false
+        },
+        "pollen": {
+          "type": "object",
+          "properties": {
+            "color": {
+              "$ref": "#/$defs/color"
+            },
+            "presentation": {
+              "description": "Dispersal unit.",
+              "anyOf": [
+                {
+                  "enum": [
+                    "monad",
+                    "dyad",
+                    "tetrad",
+                    "polyad",
+                    "pollinium",
+                    "viscin-threaded",
+                    "absent"
+                  ]
+                },
+                {
+                  "$ref": "#/$defs/extensionTerm"
+                }
+              ]
+            },
+            "abundance": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "notes": {
+              "type": "string"
+            },
+            "ext": {
+              "$ref": "#/$defs/ext"
+            }
+          },
+          "additionalProperties": false
+        },
+        "exserted": {
+          "type": "boolean",
+          "description": "Projects beyond the perianth."
+        },
+        "notes": {
+          "type": "string"
+        },
+        "ext": {
+          "$ref": "#/$defs/ext"
+        }
+      },
+      "additionalProperties": false
+    },
+    "carpel": {
+      "type": "object",
+      "properties": {
+        "ovary": {
+          "type": "object",
+          "properties": {
+            "length": {
+              "$ref": "#/$defs/measure"
+            },
+            "width": {
+              "$ref": "#/$defs/measure"
+            },
+            "color": {
+              "$ref": "#/$defs/color"
+            },
+            "locules": {
+              "$ref": "#/$defs/count"
+            },
+            "ovules": {
+              "$ref": "#/$defs/count"
+            },
+            "placentation": {
+              "description": "Ovule attachment.",
+              "anyOf": [
+                {
+                  "enum": [
+                    "axile",
+                    "parietal",
+                    "free-central",
+                    "basal",
+                    "apical",
+                    "marginal",
+                    "laminar"
+                  ]
+                },
+                {
+                  "$ref": "#/$defs/extensionTerm"
+                }
+              ]
+            },
+            "surface": {
+              "$ref": "#/$defs/surface"
+            },
+            "notes": {
+              "type": "string"
+            },
+            "ext": {
+              "$ref": "#/$defs/ext"
+            }
+          },
+          "additionalProperties": false
+        },
+        "style": {
+          "type": "object",
+          "properties": {
+            "length": {
+              "$ref": "#/$defs/measure"
+            },
+            "color": {
+              "$ref": "#/$defs/color"
+            },
+            "branches": {
+              "$ref": "#/$defs/count"
+            },
+            "position": {
+              "description": "Origin on the ovary.",
+              "anyOf": [
+                {
+                  "enum": [
+                    "terminal",
+                    "lateral",
+                    "gynobasic",
+                    "absent"
+                  ]
+                },
+                {
+                  "$ref": "#/$defs/extensionTerm"
+                }
+              ]
+            },
+            "form": {
+              "description": "Shape.",
+              "anyOf": [
+                {
+                  "enum": [
+                    "filiform",
+                    "stout",
+                    "petaloid",
+                    "geniculate",
+                    "hooked",
+                    "coiled",
+                    "absent"
+                  ]
+                },
+                {
+                  "$ref": "#/$defs/extensionTerm"
+                }
+              ]
+            },
+            "notes": {
+              "type": "string"
+            },
+            "ext": {
+              "$ref": "#/$defs/ext"
+            }
+          },
+          "additionalProperties": false
+        },
+        "stigma": {
+          "type": "object",
+          "properties": {
+            "form": {
+              "description": "Shape.",
+              "anyOf": [
+                {
+                  "enum": [
+                    "capitate",
+                    "punctate",
+                    "lobed",
+                    "linear",
+                    "plumose",
+                    "discoid",
+                    "peltate",
+                    "decurrent",
+                    "petaloid",
+                    "brush-like",
+                    "papillate"
+                  ]
+                },
+                {
+                  "$ref": "#/$defs/extensionTerm"
+                }
+              ]
+            },
+            "lobes": {
+              "$ref": "#/$defs/count"
+            },
+            "color": {
+              "$ref": "#/$defs/color"
+            },
+            "surface": {
+              "description": "Receptive surface.",
+              "anyOf": [
+                {
+                  "enum": [
+                    "wet",
+                    "dry"
+                  ]
+                },
+                {
+                  "$ref": "#/$defs/extensionTerm"
+                }
+              ]
+            },
+            "notes": {
+              "type": "string"
+            },
+            "ext": {
+              "$ref": "#/$defs/ext"
+            }
+          },
+          "additionalProperties": false
+        },
+        "notes": {
+          "type": "string"
+        },
+        "ext": {
+          "$ref": "#/$defs/ext"
+        }
+      },
+      "additionalProperties": false
+    },
+    "organ": {
+      "description": "One floral organ. Every field is optional so the same shape serves as a whorl prototype and as a per-member override.",
+      "type": "object",
+      "properties": {
+        "length": {
+          "$ref": "#/$defs/measure"
+        },
+        "width": {
+          "$ref": "#/$defs/measure"
+        },
+        "color": {
+          "$ref": "#/$defs/color"
+        },
+        "persistence": {
+          "description": "Fate after anthesis.",
+          "anyOf": [
+            {
+              "enum": [
+                "caducous",
+                "deciduous",
+                "persistent",
+                "marcescent",
+                "accrescent"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "blade": {
+          "$ref": "#/$defs/blade"
+        },
+        "stamen": {
+          "$ref": "#/$defs/stamen"
+        },
+        "carpel": {
+          "$ref": "#/$defs/carpel"
+        },
+        "nectary": {
+          "type": "object",
+          "properties": {
+            "position": {
+              "type": "string"
+            },
+            "form": {
+              "description": "Shape.",
+              "anyOf": [
+                {
+                  "enum": [
+                    "disc",
+                    "ring",
+                    "gland",
+                    "scale",
+                    "pit",
+                    "spur-lining",
+                    "septal",
+                    "trichomatous"
+                  ]
+                },
+                {
+                  "$ref": "#/$defs/extensionTerm"
+                }
+              ]
+            },
+            "color": {
+              "$ref": "#/$defs/color"
+            },
+            "secretes": {
+              "description": "Reward.",
+              "anyOf": [
+                {
+                  "enum": [
+                    "nectar",
+                    "oil",
+                    "resin",
+                    "none"
+                  ]
+                },
+                {
+                  "$ref": "#/$defs/extensionTerm"
+                }
+              ]
+            },
+            "notes": {
+              "type": "string"
+            },
+            "ext": {
+              "$ref": "#/$defs/ext"
+            }
+          },
+          "additionalProperties": false
+        },
+        "notes": {
+          "type": "string"
+        },
+        "ext": {
+          "$ref": "#/$defs/ext"
+        }
+      },
+      "additionalProperties": false
+    },
+    "member": {
+      "description": "One individual organ — the single petal, the single stamen.",
+      "type": "object",
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "1-based position within the series, counted clockwise from azimuth 0 as seen from the front of the open flower."
+        },
+        "azimuth": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 360,
+          "exclusiveMaximum": 360,
+          "description": "Degrees clockwise around the floral axis, seen from the front; 0 = adaxial (toward the stem / uppermost)."
+        },
+        "role": {
+          "description": "Named part this member plays.",
+          "anyOf": [
+            {
+              "enum": [
+                "dorsal",
+                "lateral",
+                "ventral",
+                "upper-lip",
+                "lower-lip",
+                "standard",
+                "wing",
+                "keel",
+                "labellum",
+                "spurred",
+                "hood",
+                "galea",
+                "landing-platform",
+                "inner",
+                "outer"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "absent": {
+          "type": "boolean",
+          "description": "true = this position is empty (abortion, reduction)."
+        },
+        "overrides": {
+          "$ref": "#/$defs/organ",
+          "description": "Deep-merged over the whorl prototype; a present key replaces the prototype's value, objects merge key by key, arrays replace whole."
+        },
+        "notes": {
+          "type": "string"
+        },
+        "ext": {
+          "$ref": "#/$defs/ext"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "index"
+      ]
+    },
+    "whorl": {
+      "description": "One series of like organs. Series are listed from the outside of the flower inward.",
+      "type": "object",
+      "properties": {
+        "kind": {
+          "description": "Which floral series this is.",
+          "anyOf": [
+            {
+              "enum": [
+                "epicalyx",
+                "calyx",
+                "corolla",
+                "perianth",
+                "corona",
+                "paracorolla",
+                "pappus",
+                "lodicules",
+                "androecium",
+                "staminodium",
+                "gynoecium",
+                "nectary-disc"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "organName": {
+          "type": "string",
+          "description": "What one member is called here: sepal, petal, tepal, stamen, carpel, …"
+        },
+        "phyllotaxis": {
+          "description": "Insertion pattern.",
+          "anyOf": [
+            {
+              "enum": [
+                "whorled",
+                "spiral",
+                "hemicyclic",
+                "irregular"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "divergence": {
+          "$ref": "#/$defs/angle",
+          "description": "Angle between successive members for spiral insertion (≈137.5 for Fibonacci spirals)."
+        },
+        "count": {
+          "$ref": "#/$defs/count"
+        },
+        "offset": {
+          "$ref": "#/$defs/angle",
+          "description": "Azimuth of member 1 when members are not listed individually."
+        },
+        "aestivation": {
+          "description": "Arrangement in bud.",
+          "anyOf": [
+            {
+              "enum": [
+                "valvate",
+                "induplicate",
+                "reduplicate",
+                "imbricate",
+                "contorted",
+                "quincuncial",
+                "cochlear",
+                "vexillary",
+                "plicate",
+                "crumpled",
+                "open"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "connation": {
+          "type": "object",
+          "properties": {
+            "degree": {
+              "description": "Fusion among members of this series.",
+              "anyOf": [
+                {
+                  "enum": [
+                    "free",
+                    "basal",
+                    "partial",
+                    "complete",
+                    "coherent"
+                  ]
+                },
+                {
+                  "$ref": "#/$defs/extensionTerm"
+                }
+              ]
+            },
+            "tubeLength": {
+              "$ref": "#/$defs/measure"
+            },
+            "throatDiameter": {
+              "$ref": "#/$defs/measure"
+            },
+            "freeLobeLength": {
+              "$ref": "#/$defs/measure"
+            },
+            "groups": {
+              "type": "array",
+              "description": "Partial unions: bundles of stamens, lips of a corolla. Each group lists member indices.",
+              "items": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "minItems": 1
+              }
+            },
+            "bundling": {
+              "description": "Named fusion pattern.",
+              "anyOf": [
+                {
+                  "enum": [
+                    "monadelphous",
+                    "diadelphous",
+                    "polyadelphous",
+                    "syngenesious",
+                    "didynamous",
+                    "tetradynamous",
+                    "syncarpous",
+                    "apocarpous",
+                    "bilabiate",
+                    "gamopetalous",
+                    "gamosepalous"
+                  ]
+                },
+                {
+                  "$ref": "#/$defs/extensionTerm"
+                }
+              ]
+            },
+            "notes": {
+              "type": "string"
+            },
+            "ext": {
+              "$ref": "#/$defs/ext"
+            }
+          },
+          "additionalProperties": false
+        },
+        "adnation": {
+          "type": "array",
+          "description": "Fusion to other series.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "toWhorl": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "0-based index into the whorls array."
+              },
+              "degree": {
+                "description": "Extent.",
+                "anyOf": [
+                  {
+                    "enum": [
+                      "basal",
+                      "partial",
+                      "complete"
+                    ]
+                  },
+                  {
+                    "$ref": "#/$defs/extensionTerm"
+                  }
+                ]
+              },
+              "name": {
+                "type": "string",
+                "description": "e.g. epipetalous, gynostemium, hypanthium."
+              },
+              "notes": {
+                "type": "string"
+              },
+              "ext": {
+                "$ref": "#/$defs/ext"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "toWhorl"
+            ]
+          }
+        },
+        "prototype": {
+          "$ref": "#/$defs/organ",
+          "description": "The typical member of this series."
+        },
+        "members": {
+          "type": "array",
+          "description": "Individual organs. Omit when every member equals the prototype evenly spaced; list them when any differs — this is the resolution 'to the petal'.",
+          "items": {
+            "$ref": "#/$defs/member"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "ext": {
+          "$ref": "#/$defs/ext"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "kind"
+      ]
+    },
+    "flowerBody": {
+      "description": "The anatomy of a single flower at a single moment.",
+      "type": "object",
+      "properties": {
+        "sexuality": {
+          "description": "Functional sex of this flower.",
+          "anyOf": [
+            {
+              "enum": [
+                "bisexual",
+                "staminate",
+                "pistillate",
+                "sterile"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "symmetry": {
+          "description": "Symmetry of the open flower.",
+          "anyOf": [
+            {
+              "enum": [
+                "actinomorphic",
+                "zygomorphic",
+                "disymmetric",
+                "asymmetric",
+                "spiral"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "symmetryPlanes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "merosity": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Base number of parts per whorl (3-merous, 5-merous, …); 0 = indefinite."
+        },
+        "form": {
+          "description": "Overall shape.",
+          "anyOf": [
+            {
+              "enum": [
+                "rotate",
+                "stellate",
+                "cupped",
+                "bowl",
+                "campanulate",
+                "funnelform",
+                "salverform",
+                "tubular",
+                "urceolate",
+                "globose",
+                "bilabiate",
+                "personate",
+                "papilionaceous",
+                "cruciform",
+                "ligulate",
+                "galeate",
+                "calceolate",
+                "coronate",
+                "trumpet",
+                "pompon",
+                "rosette",
+                "naked"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "doubling": {
+          "description": "Horticultural petal multiplication.",
+          "anyOf": [
+            {
+              "enum": [
+                "single",
+                "semi-double",
+                "double",
+                "full",
+                "anemone",
+                "hose-in-hose"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "diameter": {
+          "$ref": "#/$defs/measure"
+        },
+        "depth": {
+          "$ref": "#/$defs/measure"
+        },
+        "orientation": {
+          "description": "Facing of the open flower.",
+          "anyOf": [
+            {
+              "enum": [
+                "erect",
+                "ascending",
+                "horizontal",
+                "nodding",
+                "pendent",
+                "resupinate"
+              ]
+            },
+            {
+              "$ref": "#/$defs/extensionTerm"
+            }
+          ]
+        },
+        "pedicel": {
+          "type": "object",
+          "properties": {
+            "length": {
+              "$ref": "#/$defs/measure"
+            },
+            "diameter": {
+              "$ref": "#/$defs/measure"
+            },
+            "color": {
+              "$ref": "#/$defs/color"
+            },
+            "surface": {
+              "$ref": "#/$defs/surface"
+            },
+            "notes": {
+              "type": "string"
+            },
+            "ext": {
+              "$ref": "#/$defs/ext"
+            }
+          },
+          "additionalProperties": false
+        },
+        "bracts": {
+          "type": "array",
+          "description": "Bracts, bracteoles, involucre, spathe, glumes, lemma, palea.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "count": {
+                "$ref": "#/$defs/count"
+              },
+              "length": {
+                "$ref": "#/$defs/measure"
+              },
+              "width": {
+                "$ref": "#/$defs/measure"
+              },
+              "color": {
+                "$ref": "#/$defs/color"
+              },
+              "blade": {
+                "$ref": "#/$defs/blade"
+              },
+              "notes": {
+                "type": "string"
+              },
+              "ext": {
+                "$ref": "#/$defs/ext"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "receptacle": {
+          "type": "object",
+          "properties": {
+            "form": {
+              "description": "Shape of the floral axis.",
+              "anyOf": [
+                {
+                  "enum": [
+                    "flat",
+                    "convex",
+                    "conical",
+                    "elongate",
+                    "concave",
+                    "cup",
+                    "urn",
+                    "disc"
+                  ]
+                },
+                {
+                  "$ref": "#/$defs/extensionTerm"
+                }
+              ]
+            },
+            "diameter": {
+              "$ref": "#/$defs/measure"
+            },
+            "color": {
+              "$ref": "#/$defs/color"
+            },
+            "ovaryPosition": {
+              "description": "Ovary relative to the other parts.",
+              "anyOf": [
+                {
+                  "enum": [
+                    "superior",
+                    "half-inferior",
+                    "inferior"
+                  ]
+                },
+                {
+                  "$ref": "#/$defs/extensionTerm"
+                }
+              ]
+            },
+            "insertion": {
+              "description": "Perianth insertion.",
+              "anyOf": [
+                {
+                  "enum": [
+                    "hypogynous",
+                    "perigynous",
+                    "epigynous"
+                  ]
+                },
+                {
+                  "$ref": "#/$defs/extensionTerm"
+                }
+              ]
+            },
+            "hypanthium": {
+              "type": "object",
+              "properties": {
+                "length": {
+                  "$ref": "#/$defs/measure"
+                },
+                "form": {
+                  "type": "string"
+                },
+                "notes": {
+                  "type": "string"
+                },
+                "ext": {
+                  "$ref": "#/$defs/ext"
+                }
+              },
+              "additionalProperties": false
+            },
+            "stalks": {
+              "type": "object",
+              "properties": {
+                "androphore": {
+                  "$ref": "#/$defs/measure"
+                },
+                "gynophore": {
+                  "$ref": "#/$defs/measure"
+                },
+                "androgynophore": {
+                  "$ref": "#/$defs/measure"
+                },
+                "notes": {
+                  "type": "string"
+                },
+                "ext": {
+                  "$ref": "#/$defs/ext"
+                }
+              },
+              "additionalProperties": false
+            },
+            "notes": {
+              "type": "string"
+            },
+            "ext": {
+              "$ref": "#/$defs/ext"
+            }
+          },
+          "additionalProperties": false
+        },
+        "whorls": {
+          "type": "array",
+          "description": "Floral series from the outside inward. May be empty for naked flowers.",
+          "items": {
+            "$ref": "#/$defs/whorl"
+          }
+        },
+        "floralFormula": {
+          "type": "string",
+          "description": "Conventional floral formula, e.g. '↯ K5 C5 A5 G(3)'."
+        },
+        "scent": {
+          "type": "object",
+          "properties": {
+            "present": {
+              "type": "boolean"
+            },
+            "intensity": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "descriptors": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "emission": {
+              "description": "When scent is released.",
+              "anyOf": [
+                {
+                  "enum": [
+                    "diurnal",
+                    "nocturnal",
+                    "crepuscular",
+                    "continuous"
+                  ]
+                },
+                {
+                  "$ref": "#/$defs/extensionTerm"
+                }
+              ]
+            },
+            "notes": {
+              "type": "string"
+            },
+            "ext": {
+              "$ref": "#/$defs/ext"
+            }
+          },
+          "additionalProperties": false
+        },
+        "rewards": {
+          "type": "array",
+          "items": {
+            "description": "What a visitor gains.",
+            "anyOf": [
+              {
+                "enum": [
+                  "nectar",
+                  "pollen",
+                  "oil",
+                  "resin",
+                  "fragrance",
+                  "shelter",
+                  "heat",
+                  "brood-site",
+                  "none-deceptive"
+                ]
+              },
+              {
+                "$ref": "#/$defs/extensionTerm"
+              }
+            ]
+          }
+        },
+        "pollination": {
+          "type": "array",
+          "items": {
+            "description": "Vector.",
+            "anyOf": [
+              {
+                "enum": [
+                  "bee",
+                  "bumblebee",
+                  "butterfly",
+                  "moth",
+                  "hawkmoth",
+                  "fly",
+                  "beetle",
+                  "wasp",
+                  "ant",
+                  "bird",
+                  "bat",
+                  "mammal",
+                  "wind",
+                  "water",
+                  "self",
+                  "cleistogamous"
+                ]
+              },
+              {
+                "$ref": "#/$defs/extensionTerm"
+              }
+            ]
+          }
+        },
+        "phenology": {
+          "type": "object",
+          "properties": {
+            "stage": {
+              "description": "Moment this record captures.",
+              "anyOf": [
+                {
+                  "enum": [
+                    "bud",
+                    "opening",
+                    "anthesis",
+                    "full-bloom",
+                    "fading",
+                    "senescent",
+                    "fruiting"
+                  ]
+                },
+                {
+                  "$ref": "#/$defs/extensionTerm"
+                }
+              ]
+            },
+            "openness": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "0 closed bud .. 1 fully expanded."
+            },
+            "longevityDays": {
+              "type": "number",
+              "minimum": 0
+            },
+            "bloomMonths": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 12
+              },
+              "uniqueItems": true
+            },
+            "hemisphere": {
+              "enum": [
+                "northern",
+                "southern",
+                "equatorial"
+              ]
+            },
+            "dichogamy": {
+              "description": "Timing of the sexes.",
+              "anyOf": [
+                {
+                  "enum": [
+                    "protandrous",
+                    "protogynous",
+                    "homogamous"
+                  ]
+                },
+                {
+                  "$ref": "#/$defs/extensionTerm"
+                }
+              ]
+            },
+            "movement": {
+              "type": "array",
+              "items": {
+                "description": "Motion.",
+                "anyOf": [
+                  {
+                    "enum": [
+                      "nyctinastic",
+                      "heliotropic",
+                      "thermonastic",
+                      "thigmonastic",
+                      "explosive",
+                      "resupinating"
+                    ]
+                  },
+                  {
+                    "$ref": "#/$defs/extensionTerm"
+                  }
+                ]
+              }
+            },
+            "notes": {
+              "type": "string"
+            },
+            "ext": {
+              "$ref": "#/$defs/ext"
+            }
+          },
+          "additionalProperties": false
+        },
+        "notes": {
+          "type": "string"
+        },
+        "ext": {
+          "$ref": "#/$defs/ext"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "whorls"
+      ]
+    }
+  }
+}
