@@ -5,8 +5,8 @@ A sealed schema for flowers.
 - `flower.schema.json` — JSON Schema (draft 2020-12) describing one flower to
   the individual petal. Frozen; see `COVENANT.md`.
 - `SEAL.sha256` — the seal. `sha256sum -c SEAL.sha256` verifies it.
-- `specimen/viola-tricolor.json` — the one proof specimen, a wild pansy.
-- `COVENANT.md` — the terms: made once, never changed, derived from only.
+- `specimen/viola-tricolor.json` — the proof specimen, a wild pansy.
+- `COVENANT.md` — the one rule: don't make the same thing twice.
 
 ## Shape
 
@@ -34,3 +34,14 @@ change it.
   invented record against the sealed schema (needs `jsonschema`); `--records`
   also writes the record as JSON.
 - `garden/` — seeds 1 to 12.
+- `realise.py record.json --out DIR` (or `--seed N`) — answers "can this
+  flower exist in space?". It checks the record for contradictions the schema
+  cannot see, builds every sepal and petal as a 3D surface, and searches for an
+  arrangement in which none pass through each other. It writes a report
+  (`.realised.json`), three views (`.realised.svg`) and, when it succeeds, a
+  mesh in millimetres (`.obj`). Needs `numpy`. Exit status 0 realised, 1
+  inconsistent, 2 no clear arrangement found.
+- `realised/` — the pansy and two generated flowers, realised.
+- `ledger.tsv` — every flower grown, by seed, name and drawing hash. The
+  generator refuses a seed or a drawing that is already listed, so nothing is
+  made twice. Commit the ledger after growing new flowers.

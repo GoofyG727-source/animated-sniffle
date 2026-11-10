@@ -1,0 +1,85 @@
+{
+  "flower": "Wild pansy",
+  "id": "proof-specimen-viola-tricolor",
+  "derivedFrom": "urn:flower-schema:1 sha256:8440941d9f0e5761111f169400b5828a132b2a4852a62bacdb0cd860a8bc31ca",
+  "consistent": true,
+  "errors": [],
+  "warnings": [],
+  "realised": true,
+  "layerStepDegrees": 0,
+  "pitchDegrees": 0,
+  "surfaces": 10,
+  "intersectingPairs": [],
+  "organs": [
+    {
+      "whorl": "calyx",
+      "index": 1,
+      "azimuth": 0.0,
+      "elevation": 100.0,
+      "pitch": 0
+    },
+    {
+      "whorl": "calyx",
+      "index": 2,
+      "azimuth": 72.0,
+      "elevation": 100.0,
+      "pitch": 0
+    },
+    {
+      "whorl": "calyx",
+      "index": 3,
+      "azimuth": 144.0,
+      "elevation": 100.0,
+      "pitch": 0
+    },
+    {
+      "whorl": "calyx",
+      "index": 4,
+      "azimuth": 216.0,
+      "elevation": 100.0,
+      "pitch": 0
+    },
+    {
+      "whorl": "calyx",
+      "index": 5,
+      "azimuth": 288.0,
+      "elevation": 100.0,
+      "pitch": 0
+    },
+    {
+      "whorl": "corolla",
+      "index": 1,
+      "azimuth": 324,
+      "elevation": 85.0,
+      "pitch": 0
+    },
+    {
+      "whorl": "corolla",
+      "index": 2,
+      "azimuth": 36,
+      "elevation": 85.0,
+      "pitch": 0
+    },
+    {
+      "whorl": "corolla",
+      "index": 3,
+      "azimuth": 108,
+      "elevation": 85.0,
+      "pitch": 0
+    },
+    {
+      "whorl": "corolla",
+      "index": 4,
+      "azimuth": 180,
+      "elevation": 85.0,
+      "pitch": 0
+    },
+    {
+      "whorl": "corolla",
+      "index": 5,
+      "azimuth": 252,
+      "elevation": 85.0,
+      "pitch": 0
+    }
+  ]
+}

@@ -14,9 +14,13 @@ Rules the generator holds itself to, which the schema alone does not enforce:
     touch or overlap by a bounded amount and never exceed 1.6x their share;
   - inner whorls are shorter than outer ones; gradients run base to apex.
 
+Every flower grown is written to ledger.tsv beside this file. A seed already in
+the ledger, or a drawing identical to one already there, is refused: nothing is
+made twice.
+
 Usage: generate.py SEED [SEED ...] [--out DIR] [--records] [--check]
 """
-import colorsys, json, math, os, random, sys
+import colorsys, hashlib, json, math, os, random, sys
 from render import render
 
 URN = "urn:flower-schema:1"
@@ -191,6 +195,14 @@ def self_check(rec):
         g = w["prototype"].get("blade", {}).get("gradient")
         assert not g or [s["at"] for s in g] == sorted(s["at"] for s in g)
 
+LEDGER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ledger.tsv")
+
+def read_ledger():
+    """seed -> (name, sha256 of the drawing) for every flower already grown."""
+    if not os.path.exists(LEDGER): return {}
+    rows = (line.rstrip("\n").split("\t") for line in open(LEDGER) if line.strip() and not line.startswith("#"))
+    return {seed: (label, digest) for seed, label, digest in rows}
+
 if __name__ == "__main__":
     args, out = sys.argv[1:], "."
     if "--out" in args: out = args.pop(args.index("--out") + 1); args.remove("--out")
@@ -200,10 +212,24 @@ if __name__ == "__main__":
         from jsonschema import Draft202012Validator
         validator = Draft202012Validator(json.load(open(os.path.join(os.path.dirname(__file__), "..", "flower.schema.json"))))
     os.makedirs(out, exist_ok=True)
+    grown, refused = read_ledger(), 0
+    drawings = {digest: seed for seed, (_, digest) in grown.items()}
     for seed in [a for a in args if not a.startswith("--")]:
+        if seed in grown:
+            print(f"seed {seed}: already grown as {grown[seed][0]} - not made twice"); refused += 1; continue
         rec = flower(seed)
         self_check(rec)
         if validator: validator.validate(rec)
-        open(os.path.join(out, f"seed-{seed}.svg"), "w").write(render(rec))
+        svg = render(rec)
+        digest = hashlib.sha256(svg.encode()).hexdigest()
+        if digest in drawings:
+            print(f"seed {seed}: identical to seed {drawings[digest]} - not made twice"); refused += 1; continue
+        open(os.path.join(out, f"seed-{seed}.svg"), "w").write(svg)
         if records: json.dump(rec, open(os.path.join(out, f"seed-{seed}.json"), "w"), indent=2)
+        new = not os.path.exists(LEDGER)
+        with open(LEDGER, "a") as f:
+            if new: f.write("# seed\tname\tsha256 of drawing - every flower grown; none is grown twice\n")
+            f.write(f"{seed}\t{rec['identity']['label']}\t{digest}\n")
+        grown[seed] = (rec["identity"]["label"], digest); drawings[digest] = seed
         print(f"seed {seed}: {rec['identity']['label']}")
+    sys.exit(1 if refused else 0)
